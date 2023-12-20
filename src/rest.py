@@ -11,7 +11,7 @@ def home():
     }
 
 @app.route('/api/v1/users/login', methods=['POST'])
-def auth():
+def login_route():
     data = request.get_json()
     
     authorization_data = login(data)
@@ -24,7 +24,7 @@ def auth():
     
 @app.route('/api/v1/occurrences',  methods=['POST', 'GET'])
 @authenticated
-def occurrences(user_id):
+def occurrences_route(user_id):
     
     if request.method == 'GET':
         return jsonify(get_occurrences_list(user_id))
