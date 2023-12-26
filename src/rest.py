@@ -22,7 +22,7 @@ def login_route():
         
     return jsonify(authorization_data)
     
-@app.route('/api/v1/occurrences',  methods=['POST', 'GET'])
+@app.route('/api/v1/occurrences',  methods=['POST', 'GET'], endpoint='occurrences')
 @authenticated
 def occurrences_route(user_id):
     
@@ -36,7 +36,15 @@ def occurrences_route(user_id):
         return jsonify({'message':'ok'})
 
 
+@app.route('/api/v1/occurrences/grouped',  methods=['GET'],  endpoint='occurrences_grouped')
+@authenticated
+def occurrences_grouped_route(user_id):
+    
+    return jsonify(group_occorrences_day(user_id))
+    
+    
+
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
