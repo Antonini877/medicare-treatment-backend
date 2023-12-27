@@ -36,14 +36,18 @@ def occurrences_route(user_id):
         return jsonify({'message':'ok'})
 
 
-@app.route('/api/v1/occurrences/grouped',  methods=['GET'],  endpoint='occurrences_grouped')
+@app.route('/api/v1/occurrences/grouped/byday',  methods=['GET'],  endpoint='occurrences_grouped')
 @authenticated
 def occurrences_grouped_route(user_id):
     
-    return jsonify(group_occorrences_day(user_id))
+    return jsonify(group_occurrences_day(user_id))
     
     
-
+@app.route('/api/v1/occurrences/grouped/bydayperiod',  methods=['GET'],  endpoint='occurrences_grouped_day_period')
+@authenticated
+def occurrences_grouped_dayperiod_route(user_id):
+    
+    return jsonify(group_occurrences_day_period(user_id))
 
 
 if __name__ == '__main__':
