@@ -4,7 +4,9 @@ from sqlalchemy import text
 
 
 def get_occurrences_list(user_id:int) -> list:
-    
+    '''
+    Gets all user pain occurrences registered in the mobile app for the user
+    '''
     user_occurrences = Occurrences.query\
         .filter(Occurrences.user_id==user_id)\
         .order_by(Occurrences.created.desc())\
@@ -22,10 +24,13 @@ def get_occurrences_list(user_id:int) -> list:
     return results
 
 def write_occurrence(user_id:int, data:dict) -> None:
+    '''
+    Writes a occurrence of a pain
+    '''
     new_occurrence = Occurrences(
         user_id=user_id,
         pain=data['pain'],
-        description=data['description'] if 'description' in data else None,
+        description=data['description'] if 'description' in data else None, # description is optional
         created=data['created']
     )
 
@@ -33,7 +38,10 @@ def write_occurrence(user_id:int, data:dict) -> None:
     db.session.commit()
 
 def group_occurrences_day(user_id:int) -> list:
-     
+    '''
+    Analyses pain occurrences for the past week 
+    '''
+    
     query = text(
         '''
         SELECT
@@ -77,7 +85,10 @@ def group_occurrences_day(user_id:int) -> list:
 
 
 def group_occurrences_day_period(user_id:int) -> list:
-     
+    '''
+    Analyses pain occurrences based on day period
+    '''
+    
     query = text(
         '''
         

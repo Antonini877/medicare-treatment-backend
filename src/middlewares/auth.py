@@ -3,6 +3,9 @@ from models.Users import Users
 
 
 def authenticated(func):
+    '''
+    Check user api key and returns the user_id 
+    '''
     def wrapper(*args, **kwargs):
         api_key = request.headers.get('Api-Key')
         user = Users.query.filter(Users.api_key == api_key).first()
