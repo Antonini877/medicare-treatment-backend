@@ -45,24 +45,13 @@ def group_occurrences_day(user_id:int) -> list:
     query = text(
         '''
         SELECT
-            DAY(oc.created) AS day,
-            MONTH(oc.created) AS month,
+            DATE(created) AS date,
             COUNT(*) AS count,
-            AVG(oc.pain) AS avg_pain
-        FROM
-            (
-                SELECT 
-                    created,
-                    user_id,
-                    pain
-                FROM  occurrences 
-                WHERE :user_id=user_id
-                ORDER BY created DESC
-
-            ) oc
-        GROUP BY
-            DAY(oc.created),
-            MONTH(oc.created)
+            AVG(pain) AS avg_pain
+        FROM occurrences
+        WHERE :user_id=user_id
+        GROUP BY DATE(created) 
+        ORDER BY DATE(created) DESC
         
         LIMIT 7 
     
@@ -74,12 +63,14 @@ def group_occurrences_day(user_id:int) -> list:
 
     formatted_result = [
         {
-            'date': f'{row.day}/{row.month}',
+            'date': row.date.strftime('%d/%m'),
             'count': row.count,
             'avg_pain': float(row.avg_pain)
          }
         for row in result
     ]
+
+    formatted_result.reverse()
 
     return formatted_result
 
