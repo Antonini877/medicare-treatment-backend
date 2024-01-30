@@ -27,7 +27,11 @@ def login_route():
 def occurrences_route(user_id):
     
     if request.method == 'GET':
-        return jsonify(get_occurrences_list(user_id))
+        
+        page = request.args.get('page')  
+        page_size = request.args.get('pageSize')
+        
+        return jsonify(get_occurrences_list(user_id, page, page_size))
     
     elif request.method == 'POST':
         data = request.get_json()

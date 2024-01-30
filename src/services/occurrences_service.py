@@ -3,16 +3,18 @@ from app import db
 from sqlalchemy import text
 
 
-def get_occurrences_list(user_id:int) -> list:
+def get_occurrences_list(user_id:int, page:int|None, page_size:int|None) -> list:
     '''
     Gets all user pain occurrences registered in the mobile app for the user
     '''
+    page = int(page) if page is not None else None
+    page_size = int(page_size) if page_size is not None else None
+
     user_occurrences = Occurrences.query\
         .filter(Occurrences.user_id==user_id)\
         .order_by(Occurrences.created.desc())\
-        .all()
+        .paginate(page=page, per_page=page_size, error_out=False)
     
-
     results = [
             {
                 'datetime': occurrence.created.strftime('%d/%m/%Y %H:%M:%S'),
